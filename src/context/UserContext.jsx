@@ -12,20 +12,27 @@ export const UserProvider = ({ children }) => {
     // Fetch current user info on mount to check session cookie
     useEffect(() => {
         async function fetchUser() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                setUser(null);
+                setLoading(false);
+                return;
+            }
+
             try {
                 const response = await fetch(`${baseURL}/accounts/me/`, {
                     method: 'GET',
-                    credentials: 'include', // send cookies
                     headers: {
                         'Content-Type': 'application/json',
+                        'Authorization': `Token ${token}`,
                     },
                 });
 
                 if (response.ok) {
                     const data = await response.json();
-                    setUser(data); // user data from backend (includes is_staff)
+                    setUser(data);
                 } else {
-                    setUser(null); // not logged in or session expired
+                    setUser(null);
                 }
             } catch (error) {
                 console.error('Error fetching user:', error);
@@ -34,6 +41,7 @@ export const UserProvider = ({ children }) => {
                 setLoading(false);
             }
         }
+
 
         fetchUser();
     }, [baseURL]);

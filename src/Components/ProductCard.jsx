@@ -1,6 +1,6 @@
 import './ProductCard.css';
 
-function ProductCard({ product }) {
+function ProductCard({ product, onEditClick }) {
     function formatPrice(price) {
         const num = Number(price);
         return !isNaN(num) ? `${num.toFixed(2)}` : 'N/A';
@@ -8,6 +8,16 @@ function ProductCard({ product }) {
 
     return (
         <div className="card h-100 shadow-sm border-0 product-card">
+            <button
+                type="button"
+                className="btn btn-sm btn-outline-secondary position-absolute"
+                style={{ top: '0.5rem', left: '0.5rem', zIndex: 10 }}
+                onClick={() => onEditClick(product)}
+                aria-label={`Edit ${product.name}`}
+            >
+                🔧
+            </button>
+
             {product.image ? (
                 <img
                     src={product.image}

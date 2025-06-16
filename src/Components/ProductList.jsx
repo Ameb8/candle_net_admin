@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import ProductCard from './ProductCard';
+import ModifyProduct from './ModifyProduct';
 
 function ProductList() {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [editingProduct, setEditingProduct] = useState(null)
     const baseURL = import.meta.env.VITE_API_URL;
 
     useEffect(() => {
@@ -32,10 +34,30 @@ function ProductList() {
             <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
                 {products.map(product => (
                     <div key={product.id} className="col">
-                        <ProductCard product={product} />
+                        <ProductCard
+                            product={product}
+                            onEditClick={setEditingProduct}
+                        />
                     </div>
                 ))}
             </div>
+
+            {/* Conditionally show ModifyProduct modal */}
+            {editingProduct && (
+                <ModifyProduct
+                    product={editingProduct}
+                    onClose={() => setEditingProduct(null)}
+                    onSave={(updatedProduct) => {
+                        // Update products state with new data
+                        setProducts((prev) =>
+                            prev.map(p =>
+                                p.id === updatedProduct.id ? updatedProduct : p
+                            )
+                        );
+                        setEditingProduct(null);
+                    }}
+                />
+            )}
         </div>
     );
 }

@@ -18,31 +18,24 @@ function AdminLogin({ onLoginSuccess }) {
             // Send login request, session cookie will be set by backend
             const response = await fetch(`${baseURL}/accounts/login/`, {
                 method: 'POST',
-                credentials: 'include', // important to send cookies
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password }),
             });
 
+            const data = await response.json();
+
             if (response.ok) {
-                // After successful login, fetch user info to update context
-                await login();
+                localStorage.setItem('token', data.token); // Get JWT Token
+                const success = await login(); // Login result
 
-                // Or you can fetch user info here directly as a shortcut:
-                const meResponse = await fetch(`${baseURL}/accounts/me/`, {
-                    credentials: 'include',
-                    headers: { 'Content-Type': 'application/json' },
-                });
-                const userData = await meResponse.json();
-
-                if (!userData.is_staff) {
-                    setError('You must be an admin to log in here.');
+                if (!success?.is_staff) { // No admin privileges
+                    setError('This page is staff only');
                     setLoading(false);
                     return;
                 }
 
-                onLoginSuccess && onLoginSuccess();
-            } else {
-                const data = await response.json();
+                onLoginSuccess?.();
+            } else { // Login failure
                 setError(data.error || 'Login failed.');
             }
         } catch (err) {

@@ -1,12 +1,17 @@
 import { useState } from 'react';
+import { useUser } from '../context/UserContext';
 
 function CreateProductForm() {
+    const { user } = useUser(); // or get token directly if you store it separately
+    const token = user?.token;
+
     const [formData, setFormData] = useState({
         name: '',
         category: '',
         description: '',
         price: '',
         image: null,
+        amount: 1,
     });
 
     const handleChange = (e) => {
@@ -19,16 +24,19 @@ function CreateProductForm() {
         setFormData(prev => ({ ...prev, image: file }));
     };
 
+    const incrementAmount = () => {
+        setFormData(prev => ({ ...prev, amount: prev.amount + 1 }));
+    };
+
+    const decrementAmount = () => {
+        setFormData(prev => ({ ...prev, amount: Math.max(1, prev.amount - 1) }));
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         const baseURL = import.meta.env.VITE_API_URL;
         const url = `${baseURL}/inventory/products/`;
-
-        const csrfToken = document.cookie
-            .split('; ')
-            .find(row => row.startsWith('csrftoken='))
-            ?.split('=')[1];
 
         const payload = new FormData();
         payload.append('name', formData.name);
@@ -36,13 +44,13 @@ function CreateProductForm() {
         payload.append('description', formData.description);
         payload.append('price', formData.price);
         payload.append('image', formData.image);
+        payload.append('amount', formData.amount);
 
         try {
             const response = await fetch(url, {
-                credentials: "include",
                 method: 'POST',
                 headers: {
-                    'X-CSRFToken': csrfToken
+                    'Authorization': `Bearer ${token}`,
                 },
                 body: payload,
             });
@@ -58,13 +66,14 @@ function CreateProductForm() {
             console.log('Product created:', result);
             alert('Product created successfully!');
 
-            // Optional: reset form
+            // Reset form
             setFormData({
                 name: '',
                 category: '',
                 description: '',
                 price: '',
                 image: null,
+                amount: 1,
             });
 
         } catch (err) {
@@ -139,6 +148,24 @@ function CreateProductForm() {
                     onChange={handleImageChange}
                     required
                 />
+            </label>
+
+            <br />
+
+            <label>
+                Quantity:
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <button type="button" onClick={decrementAmount}>-</button>
+                    <input
+                        type="number"
+                        name="amount"
+                        value={formData.amount}
+                        min="1"
+                        readOnly
+                        style={{ width: '60px', textAlign: 'center' }}
+                    />
+                    <button type="button" onClick={incrementAmount}>+</button>
+                </div>
             </label>
 
             <br /><br />
