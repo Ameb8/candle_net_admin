@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import ImageUpload from './ImageUpload';
-import {useUser} from "../context/UserContext.jsx";
+import { useUser } from "../context/UserContext.jsx";
+import ImageManager from "./ImageManager";
 
 export default function UpdateAbout() {
     const [header, setHeader] = useState('');
     const [body, setBody] = useState('');
     const { user } = useUser();
+    const imgURL = `${import.meta.env.VITE_API_URL}/design/image-in-list/`
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -29,7 +31,7 @@ export default function UpdateAbout() {
 
             const data = await response.json(); // Await response
 
-            if (!response.ok) { // Error Occured
+            if (!response.ok) { // Error Occurred
                 throw new Error(data.detail || 'Update failed');
             }
 
@@ -74,7 +76,14 @@ export default function UpdateAbout() {
             </form>
 
             <h5>Upload Images</h5>
-            <ImageUpload listName="about"/>
+            {/* <ImageUpload listName="about"/> */}
+            <ImageManager
+                getURL={imgURL}
+                addURL={imgURL}
+                moveURL={`${imgURL}reorder/`}
+                deleteURL={imgURL}
+            />
+
         </div>
     );
 }

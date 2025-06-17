@@ -6,7 +6,6 @@ export const useUser = () => useContext(UserContext);
 export const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null); // e.g. { is_staff: true, username: 'admin', ... }
     const [loading, setLoading] = useState(true);
-
     const baseURL = import.meta.env.VITE_API_URL;
 
     // Fetch current user info on mount to check session cookie
@@ -49,13 +48,14 @@ export const UserProvider = ({ children }) => {
     // login function - after successful login API call, refetch user info
     const login = async () => {
         setLoading(true);
-        try {
-            // You can optionally refetch user info after login to update state
+        const token = localStorage.getItem('token');
+
+        try { // Get user info
             const response = await fetch(`${baseURL}/accounts/me/`, {
                 method: 'GET',
-                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Token ${token}`,
                 },
             });
 

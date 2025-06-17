@@ -1,84 +1,63 @@
-import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import newIcon from '../assets/new.png';
-import deleteIcon from '../assets/delete.png';
-import CreateProductForm from './CreateProduct.jsx';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import './Navbar.css'; // Import your custom styles
 
 function Navbar() {
-    const [showForm, setShowForm] = useState(false);
+    const navigate = useNavigate();
 
     return (
         <>
-            <nav className="navbar navbar-expand-lg navbar-dark bg-dark px-3">
-                <a className="navbar-brand" href="/">candle_co Admin</a>
-
-                <div className="ms-auto d-flex align-items-center gap-3">
-                    <button
-                        className="btn btn-outline-light d-flex align-items-center gap-2"
-                        onClick={() => setShowForm(prev => !prev)}
-                    >
-                        <img src={newIcon} alt="Create" width="20" height="20" />
-                        Create Product
-                    </button>
-
-                    <button className="btn btn-outline-danger d-flex align-items-center gap-2">
-                        <img src={deleteIcon} alt="Delete" width="20" height="20" />
-                        Remove Products
-                    </button>
-
-                    <button className="btn btn-outline-light">
-                        Order History
-                    </button>
-
-                    <button className="btn btn-warning text-dark fw-semibold">
-                        Pending
-                    </button>
-                </div>
-            </nav>
-
-            {showForm && (
-                <div
-                    style={{
-                        position: 'fixed',
-                        top: 0,
-                        left: 0,
-                        width: '100vw',
-                        height: '100vh',
-                        backgroundColor: 'rgba(0, 0, 0, 0.6)',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        zIndex: 9999,
-                    }}
+            {/* Skinny vertical bar with hamburger */}
+            <div className="vertical-navbar navbar text-white d-flex flex-column align-items-center">
+                <button
+                    className="navbar-toggler custom-toggler mt-3"
+                    type="button"
+                    data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasMenu"
+                    aria-controls="offcanvasMenu"
                 >
-                    <div
-                        style={{
-                            background: 'white',
-                            padding: '20px',
-                            borderRadius: '10px',
-                            position: 'relative',
-                            maxWidth: '500px',
-                            width: '100%',
-                        }}
-                    >
-                        <button
-                            onClick={() => setShowForm(false)}
-                            style={{
-                                position: 'absolute',
-                                top: 10,
-                                right: 10,
-                                border: 'none',
-                                background: 'transparent',
-                                fontSize: '1.5rem',
-                                cursor: 'pointer',
-                            }}
-                        >
-                            &times;
-                        </button>
-                        <CreateProductForm />
-                    </div>
+                    <span className="navbar-toggler-icon"></span>
+                </button>
+            </div>
+
+            {/* Offcanvas full menu */}
+            <div
+                className="offcanvas offcanvas-start bg-dark text-white"
+                tabIndex="-1"
+                id="offcanvasMenu"
+                aria-labelledby="offcanvasMenuLabel"
+            >
+                <div className="offcanvas-header">
+                    <h5 className="offcanvas-title" id="offcanvasMenuLabel">Admin Menu</h5>
+                    <button
+                        type="button"
+                        className="btn-close btn-close-white"
+                        data-bs-dismiss="offcanvas"
+                        aria-label="Close"
+                    ></button>
                 </div>
-            )}
+                <div className="offcanvas-body d-flex flex-column gap-3">
+                    <button className="btn btn-outline-light text-start" onClick={() => {
+                        navigate('/');
+                        document.querySelector('#offcanvasMenu .btn-close').click();
+                    }}>
+                        🏠 Product List
+                    </button>
+                    <button className="btn btn-outline-light text-start" onClick={() => {
+                        navigate('/orders');
+                        document.querySelector('#offcanvasMenu .btn-close').click();
+                    }}>
+                        📦 Paid Orders
+                    </button>
+                    <button className="btn btn-outline-light text-start" onClick={() => {
+                        navigate('/about');
+                        document.querySelector('#offcanvasMenu .btn-close').click();
+                    }}>
+                        📝 Update About
+                    </button>
+                </div>
+            </div>
         </>
     );
 }

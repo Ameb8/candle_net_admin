@@ -23,7 +23,7 @@ function ProductCard({ product, onEditClick }) {
                     src={product.image}
                     className="card-img-top"
                     alt={product.name}
-                    style={{ objectFit: 'cover', height: '200px' }}
+                    style={{ objectFit: 'cover'}}
                 />
             ) : (
                 <div
