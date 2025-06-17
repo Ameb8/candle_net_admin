@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import OrderAddress from './OrderAddress';
+import OrderDetails from './OrderDetails';
 import { Modal, Button } from 'react-bootstrap';
 import { FaChevronDown, FaChevronRight } from 'react-icons/fa';
 
@@ -8,13 +9,11 @@ export default function PaidOrders() {
     const [expandedOrders, setExpandedOrders] = useState({});
     const [selectedAddress, setSelectedAddress] = useState(null);
     const [showModal, setShowModal] = useState(false);
-    const url = `${import.meta.env.VITE_API_URL}order/admin/orders/`;
-    console.log('Fetching from:', url);
 
     const token = localStorage.getItem('token');
 
     useEffect(() => {
-        fetch(`${import.meta.env.VITE_API_URL}/order/admin/orders/`, {
+        fetch(`${import.meta.env.VITE_API_URL}/order/admin/orders/?status=paid&ordering=created_at`, {
             headers: {
                 'Authorization': `Token ${token}`
             }
@@ -38,6 +37,17 @@ export default function PaidOrders() {
 
     const handleCloseModal = () => setShowModal(false);
 
+    const formatDate = (isoString) => {
+        const date = new Date(isoString);
+        return date.toLocaleString(undefined, {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: '2-digit'
+        });
+    };
+
     return (
         <div className="container mt-4">
             <h3>Paid Orders</h3>
@@ -48,20 +58,16 @@ export default function PaidOrders() {
                             <button className="btn btn-sm btn-link" onClick={() => toggleExpanded(order.id)}>
                                 <FaChevronDown className={expandedOrders[order.id] ? 'rotate-180' : ''} />
                             </button>
-                            <strong className="ms-2">Order #{order.order_code}</strong> - ${order.total_amount / 100}
+                            <strong className="ms-2">{formatDate(order.created_at)}</strong>
                         </div>
-                        <Button variant="outline-primary" size="sm" onClick={() => handleShowAddress(order.shipping_address)}>
-                            <FaChevronRight /> Address
-                        </Button>
+                        {order.shipping_address && (
+                            <Button variant="outline-primary" size="sm" onClick={() => handleShowAddress(order.shipping_address)}>
+                                Address
+                            </Button>
+                        )}
                     </div>
                     {expandedOrders[order.id] && (
-                        <ul className="list-group list-group-flush">
-                            {order.items.map((item, index) => (
-                                <li key={index} className="list-group-item">
-                                    {item.quantity} × {item.product.name}
-                                </li>
-                            ))}
-                        </ul>
+                        <OrderDetails order={order} />
                     )}
                 </div>
             ))}
