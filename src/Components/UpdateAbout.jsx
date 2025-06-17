@@ -80,8 +80,9 @@ export default function UpdateAbout() {
             <ImageManager
                 getURL={imgURL}
                 addURL={imgURL}
-                moveURL={`${imgURL}reorder/`}
                 deleteURL={imgURL}
+                orderURL={`${imgURL}reorder/`}
+                list = {'about'}
             />
 
         </div>

@@ -7,7 +7,7 @@ import { FaChevronDown, FaChevronRight } from 'react-icons/fa';
 export default function PaidOrders() {
     const [orders, setOrders] = useState([]);
     const [expandedOrders, setExpandedOrders] = useState({});
-    const [selectedAddress, setSelectedAddress] = useState(null);
+    const [selectedOrderId, setSelectedOrderId] = useState(null);
     const [showModal, setShowModal] = useState(false);
 
     const token = localStorage.getItem('token');
@@ -30,8 +30,8 @@ export default function PaidOrders() {
         }));
     };
 
-    const handleShowAddress = (address) => {
-        setSelectedAddress(address);
+    const handleShowAddress = (orderId) => {
+        setSelectedOrderId(orderId);
         setShowModal(true);
     };
 
@@ -61,13 +61,13 @@ export default function PaidOrders() {
                             <strong className="ms-2">{formatDate(order.created_at)}</strong>
                         </div>
                         {order.shipping_address && (
-                            <Button variant="outline-primary" size="sm" onClick={() => handleShowAddress(order.shipping_address)}>
+                            <Button variant="outline-primary" size="sm" onClick={() => handleShowAddress(order.id)}>
                                 Address
                             </Button>
                         )}
                     </div>
                     {expandedOrders[order.id] && (
-                        <OrderDetails order={order} />
+                        <OrderDetails orderId={order.id} />
                     )}
                 </div>
             ))}
@@ -77,7 +77,7 @@ export default function PaidOrders() {
                     <Modal.Title>Shipping Address</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    {selectedAddress && <OrderAddress address={selectedAddress} />}
+                    {selectedOrderId && <OrderAddress orderId={selectedOrderId} />}
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleCloseModal}>Close</Button>
