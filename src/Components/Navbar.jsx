@@ -56,6 +56,18 @@ function Navbar() {
                     }}>
                         📝 Update About
                     </button>
+                    <button className="btn btn-outline-light text-start" onClick={() => {
+                        navigate('/contact');
+                        document.querySelector('#offcanvasMenu .btn-close').click();
+                    }}>
+                        📞 Update Contact
+                    </button>
+                    <button className="btn btn-outline-light text-start" onClick={() => {
+                        navigate('/create');
+                        document.querySelector('#offcanvasMenu .btn-close').click();
+                    }}>
+                        👤➕ Create Admin Account
+                    </button>
                 </div>
             </div>
         </>

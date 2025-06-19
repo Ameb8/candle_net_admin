@@ -4,7 +4,8 @@ import {
     closestCenter,
     PointerSensor,
     useSensor,
-    useSensors
+    useSensors,
+    TouchSensor
 } from '@dnd-kit/core';
 import {
     arrayMove,
@@ -24,9 +25,14 @@ function SortableImage({ item, onDelete }) {
     };
 
     return (
-        <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-            <Card style={{ width: '6rem', margin: '0.5rem' }}>
-                <Card.Img variant="top" src={item.image.image} />
+        <div ref={setNodeRef} style={style} {...attributes}>
+            <Card style={{ width: '6rem', margin: '0.5rem', touchAction: 'none' }} {...listeners}>
+                <Card.Img
+                    variant="top"
+                    src={item.image.image}
+                    style={{ userSelect: 'none', touchAction: 'none' }}
+                />
+
                 <Card.Body className="p-2 text-center">
                     <Button variant="danger" size="sm" onClick={() => onDelete(item.id)}>Remove</Button>
                 </Card.Body>
@@ -39,7 +45,10 @@ export default function ImageManager({ getURL, addURL, deleteURL, orderURL, list
     const [images, setImages] = useState([]);
     const [file, setFile] = useState(null);
 
-    const sensors = useSensors(useSensor(PointerSensor));
+    const sensors = useSensors(
+        useSensor(PointerSensor),
+        useSensor(TouchSensor) // Add this line
+    );
 
     const fetchImages = () => {
         const token = localStorage.getItem('token');
@@ -83,11 +92,10 @@ export default function ImageManager({ getURL, addURL, deleteURL, orderURL, list
             })
             .then(() => {
                 setFile(null);
-                fetchImages();  // Refresh images list after adding
+                fetchImages();
             })
             .catch(err => {
                 console.error(err);
-                // optionally show error to user
             });
     };
 
