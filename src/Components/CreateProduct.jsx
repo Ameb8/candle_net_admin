@@ -3,7 +3,7 @@ import { useUser } from '../context/UserContext';
 
 function CreateProductForm() {
     const { user } = useUser(); // or get token directly if you store it separately
-    const token = user?.token;
+    const token = localStorage.getItem('token');
 
     const [formData, setFormData] = useState({
         name: '',
@@ -47,10 +47,11 @@ function CreateProductForm() {
         payload.append('amount', formData.amount);
 
         try {
+            console.log(`Token: ${token}`);
             const response = await fetch(url, {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${token}`,
+                    'Authorization': `Token ${token}`,
                 },
                 body: payload,
             });

@@ -63,10 +63,16 @@ function Navbar() {
                         📞 Update Contact
                     </button>
                     <button className="btn btn-outline-light text-start" onClick={() => {
-                        navigate('/create');
+                        navigate('/create-user');
                         document.querySelector('#offcanvasMenu .btn-close').click();
                     }}>
-                        👤➕ Create Admin Account
+                        👤 Create Admin Account
+                    </button>
+                    <button className="btn btn-outline-light text-start" onClick={() => {
+                        navigate('/create-product');
+                        document.querySelector('#offcanvasMenu .btn-close').click();
+                    }}>
+                        ➕ Create New Product
                     </button>
                 </div>
             </div>

@@ -79,6 +79,8 @@ export default function ImageManager({ getURL, addURL, deleteURL, orderURL, list
         formData.append('image', file);
         formData.append('list_name', list);
 
+        console.log(`Add URL: ${addURL}`);
+
             fetch(addURL, {
             method: 'POST',
             headers: {

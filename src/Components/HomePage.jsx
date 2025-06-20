@@ -5,6 +5,7 @@ import UpdateAbout from "./UpdateAbout.jsx";
 import UpdateContact from "./UpdateContact.jsx";
 import PaidOrders from "./PaidOrders.jsx";
 import AdminRegisterForm from "./AdminRegisterForm.jsx";
+import CreateProductForm from "./CreateProduct.jsx";
 
 function HomePage() {
     return (
@@ -16,7 +17,8 @@ function HomePage() {
                     <Route path="/orders" element={<PaidOrders />} />
                     <Route path="/about" element={<UpdateAbout />} />
                     <Route path="/contact" element={<UpdateContact />} />
-                    <Route path="/create" element={<AdminRegisterForm />} />/
+                    <Route path="/create-user" element={<AdminRegisterForm />} />/
+                    <Route path="/create-product" element={<CreateProductForm />} />/
                 </Routes>
             </div>
         </Router>
