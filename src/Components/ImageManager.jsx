@@ -34,7 +34,14 @@ function SortableImage({ item, onDelete }) {
                 />
 
                 <Card.Body className="p-2 text-center">
-                    <Button variant="danger" size="sm" onClick={() => onDelete(item.id)}>Remove</Button>
+                    <Button
+                        variant="danger"
+                        size="sm"
+                        onClick={() => onDelete(item.id)}
+                        onPointerDown={(e) => e.stopPropagation()} // prevents DnD from hijacking
+                    >
+                        Remove
+                    </Button>
                 </Card.Body>
             </Card>
         </div>
@@ -101,17 +108,28 @@ export default function ImageManager({ getURL, addURL, deleteURL, orderURL, list
             });
     };
 
-    const handleDelete = (id) => {
+    const handleDelete = async (id) => {
         const token = localStorage.getItem('token');
-        fetch(`${deleteURL}${id}/`, {
-            method: 'DELETE',
-            headers: {
-                Authorization: `Token ${token}`,
-            },
-        }).then(() => {
-            setImages(images.filter(img => img.id !== id));
-        });
+        try {
+            const res = await fetch(`${deleteURL}${id}/`, {
+                method: 'DELETE',
+                headers: {
+                    Authorization: `Token ${token}`,
+                },
+            });
+
+            if (!res.ok) {
+                throw new Error(`Failed to delete image with ID ${id}`);
+            }
+
+            // Refresh with latest state
+            setImages(prev => prev.filter(img => img.id !== id));
+        } catch (err) {
+            console.error('Delete error:', err);
+            alert('Failed to delete image. Check console for details.');
+        }
     };
+
 
     const handleDragEnd = (event) => {
         const { active, over } = event;

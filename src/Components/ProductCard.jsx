@@ -1,6 +1,6 @@
 import './ProductCard.css';
 
-function ProductCard({ product, onEditClick }) {
+function ProductCard({ product, onEditClick, onDeleteClick }) {
     function formatPrice(price) {
         const num = Number(price);
         return !isNaN(num) ? `${num.toFixed(2)}` : 'N/A';
@@ -16,6 +16,16 @@ function ProductCard({ product, onEditClick }) {
                 aria-label={`Edit ${product.name}`}
             >
                 🔧
+            </button>
+
+            <button
+                type="button"
+                className="btn btn-sm btn-outline-danger position-absolute"
+                style={{ top: '0.5rem', right: '0.5rem', zIndex: 10 }}
+                onClick={() => onDeleteClick(product)}
+                aria-label={`Delete ${product.name}`}
+            >
+                🗑️
             </button>
 
             {product.image ? (

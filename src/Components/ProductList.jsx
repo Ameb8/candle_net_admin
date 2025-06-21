@@ -21,6 +21,27 @@ function ProductList() {
             });
     }, []);
 
+    const handleDeleteProduct = (product) => {
+        if (window.confirm(`Are you sure you want to delete "${product.name}"?`)) {
+            fetch(`${baseURL}/inventory/products/${product.id}/`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Token ${localStorage.getItem('token')}`, // adjust if using context/session
+                }
+            })
+                .then((res) => {
+                    if (res.ok) {
+                        setProducts(prev => prev.filter(p => p.id !== product.id));
+                    } else {
+                        console.error('Failed to delete product:', res.status);
+                    }
+                })
+                .catch((err) => {
+                    console.error('Error deleting product:', err);
+                });
+        }
+    };
+
     if (loading) {
         return <div className="text-center mt-5">Loading products...</div>;
     }
@@ -37,6 +58,7 @@ function ProductList() {
                         <ProductCard
                             product={product}
                             onEditClick={setEditingProduct}
+                            onDeleteClick={handleDeleteProduct}
                         />
                     </div>
                 ))}

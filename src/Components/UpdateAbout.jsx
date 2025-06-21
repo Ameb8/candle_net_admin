@@ -76,7 +76,6 @@ export default function UpdateAbout() {
             </form>
 
             <h5>Upload Images</h5>
-            {/* <ImageUpload listName="about"/> */}
             <ImageManager
                 getURL={`${imgURL}?list_name=about`}
                 addURL={`${imgURL}add_image_to_list/`}

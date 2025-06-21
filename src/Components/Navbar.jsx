@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import './Navbar.css'; // Import your custom styles
+import './Navbar.css';
 
 function Navbar() {
     const navigate = useNavigate();
