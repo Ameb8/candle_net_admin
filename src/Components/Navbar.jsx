@@ -74,6 +74,12 @@ function Navbar() {
                     }}>
                         ➕ Create New Product
                     </button>
+                    <button className="btn btn-outline-light text-start" onClick={() => {
+                        navigate('/order-notifications');
+                        document.querySelector('#offcanvasMenu .btn-close').click();
+                    }}>
+                        🔔 Manage Order Alerts
+                    </button>
                 </div>
             </div>
         </>

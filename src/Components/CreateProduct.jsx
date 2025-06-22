@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useUser } from '../context/UserContext';
 
 function CreateProductForm() {
-    const { user } = useUser(); // or get token directly if you store it separately
+    const { user } = useUser();
     const token = localStorage.getItem('token');
 
     const [formData, setFormData] = useState({
