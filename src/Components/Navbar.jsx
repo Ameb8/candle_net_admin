@@ -80,6 +80,13 @@ function Navbar() {
                     }}>
                         🔔 Manage Order Alerts
                     </button>
+                    <button className="btn btn-outline-light text-start" onClick={() => {
+                        navigate('/metrics');
+                        document.querySelector('#offcanvasMenu .btn-close').click();
+                    }}>
+                        📊 Business Metrics
+                    </button>
+
                 </div>
             </div>
         </>

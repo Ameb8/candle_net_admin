@@ -7,6 +7,7 @@ import PaidOrders from "./PaidOrders.jsx";
 import AdminRegisterForm from "./AdminRegisterForm.jsx";
 import CreateProductForm from "./CreateProduct.jsx";
 import OrderNotifications from "./OrderNotifications.jsx";
+import MetricsDashboard from "./MetricsDashboard.jsx";
 
 function HomePage() {
     return (
@@ -21,6 +22,7 @@ function HomePage() {
                     <Route path="/create-user" element={<AdminRegisterForm />} />
                     <Route path="/create-product" element={<CreateProductForm />} />
                     <Route path="/order-notifications" element={<OrderNotifications />} />
+                    <Route path="/metrics" element={<MetricsDashboard />} />
                 </Routes>
             </div>
         </Router>
