@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import './App.css'
 import AdminLogin from "./components/Login";
-import { useUser } from './context/UserContext';
+import { useUser } from './contexts/UserContext';
 import HomePage from './components/HomePage';
 
 function App() {

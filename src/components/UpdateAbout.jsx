@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import ImageUpload from './ImageUpload';
-import { useUser } from "../context/UserContext.jsx";
+import { useUser } from "../contexts/UserContext.jsx";
 import ImageManager from "./ImageManager";
 
 export default function UpdateAbout() {
-    const [phone, setPhone] = useState('');
-    const [email, setEmail] = useState('');
+    const [header, setHeader] = useState('');
+    const [body, setBody] = useState('');
     const { user } = useUser();
     const imgURL = `${import.meta.env.VITE_API_URL}/design/image-in-list/`
 
@@ -24,8 +24,8 @@ export default function UpdateAbout() {
                     'Authorization': `Token ${token}`,
                 },
                 body: JSON.stringify({
-                    contact_num: phone,
-                    contact_mail: email
+                    about_us_title: header,
+                    about_us_body: body
                 })
             });
 
@@ -47,26 +47,26 @@ export default function UpdateAbout() {
         <div className="container mt-4">
             <form onSubmit={handleSubmit}>
                 <div className="form-group mb-3">
-                    <label htmlFor="contactNum">Phone Number:</label>
+                    <label htmlFor="aboutHeader">About us Header:</label>
                     <input
                         type="text"
                         className="form-control"
-                        id="contactNum"
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
-                        placeholder="Enter phone number"
+                        id="aboutHeader"
+                        value={header}
+                        onChange={(e) => setHeader(e.target.value)}
+                        placeholder="Enter a short heading"
                     />
                 </div>
 
                 <div className="form-group mb-3">
-                    <label htmlFor="email">Email:</label>
-                    <input
-                        type="text"
+                    <label htmlFor="aboutBody">About us Body:</label>
+                    <textarea
                         className="form-control"
-                        id="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="Enter email address"
+                        id="aboutBody"
+                        rows="5"
+                        value={body}
+                        onChange={(e) => setBody(e.target.value)}
+                        placeholder="Enter more detailed info here"
                     />
                 </div>
 
@@ -76,13 +76,12 @@ export default function UpdateAbout() {
             </form>
 
             <h5>Upload Images</h5>
-            {/* <ImageUpload listName="about"/> */}
             <ImageManager
-                getURL={`${imgURL}?list_name=contact`}
+                getURL={`${imgURL}?list_name=about`}
                 addURL={`${imgURL}add_image_to_list/`}
                 deleteURL={imgURL}
                 orderURL={`${imgURL}reorder/`}
-                list = {'contact'}
+                list = {'about'}
             />
 
         </div>

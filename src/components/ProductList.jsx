@@ -26,7 +26,7 @@ function ProductList() {
             fetch(`${baseURL}/inventory/products/${product.id}/`, {
                 method: 'DELETE',
                 headers: {
-                    'Authorization': `Token ${localStorage.getItem('token')}`, // adjust if using context/session
+                    'Authorization': `Token ${localStorage.getItem('token')}`, // adjust if using contexts/session
                 }
             })
                 .then((res) => {

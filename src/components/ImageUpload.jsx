@@ -1,6 +1,6 @@
 // ImageUploader.jsx
 import React, { useState, useRef } from 'react';
-import { useUser } from '../context/UserContext';
+import { useUser } from '../contexts/UserContext';
 
 export default function ImageUploader({ listName }) {
     const { user } = useUser();
