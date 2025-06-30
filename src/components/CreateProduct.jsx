@@ -1,6 +1,16 @@
 import { useState } from 'react';
 import { useUser } from '../contexts/UserContext';
 
+function appendDefaultFormData(formData) {
+    formData.append('weight_value', 1);
+    formData.append('weight_unit', 'lb');
+    formData.append('length', 3);
+    formData.append('width', 3);
+    formData.append('height', 7);
+    formData.append('distance_unit', 'in');
+}
+
+
 function CreateProductForm() {
     const { user } = useUser();
     const token = localStorage.getItem('token');
@@ -45,6 +55,8 @@ function CreateProductForm() {
         payload.append('price', formData.price);
         payload.append('image', formData.image);
         payload.append('amount', formData.amount);
+
+        appendDefaultFormData(payload);
 
         try {
             console.log(`Token: ${token}`);
