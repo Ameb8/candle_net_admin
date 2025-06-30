@@ -1,6 +1,6 @@
 import { Container, Card } from 'react-bootstrap';
 import TimeGraph from '../charts/TimeGraph';
-import OrdersByCategory from './OrdersByCategory';
+import OrdersByCategory from '../charts/OrdersByCategory';
 
 export default function MetricsDashboard() {
     return (
@@ -15,7 +15,17 @@ export default function MetricsDashboard() {
                     />
                 </Card.Body>
             </Card>
-            <Card>
+            <Card className="mb-4">
+                <Card.Body>
+                    <TimeGraph
+                        url={`${import.meta.env.VITE_API_URL}/metrics/revenue`}
+                        title="Revenue Over Time"
+                        xLabel="Date"
+                        yLabel="Revenue"
+                    />
+                </Card.Body>
+            </Card>
+            <Card className="mb-4">
                 <Card.Body>
                     <OrdersByCategory />
                 </Card.Body>
@@ -23,3 +33,4 @@ export default function MetricsDashboard() {
         </Container>
     );
 }
+
